@@ -39,10 +39,10 @@ const Navbar = () => {
 
     if (token) {
       const decodedToken = decode(token);
-      
+
       console.log(user?.result._id);
-      
-      if (decodedToken.exp * 1000 < new Date().getTime()) ;
+
+      if (decodedToken.exp * 1000 < new Date().getTime());
     }
 
     setUser(JSON.parse(localStorage.getItem('profile')));
@@ -60,7 +60,6 @@ const Navbar = () => {
             <Avatar className={classes.purple} alt={user?.result.name} src={user?.result.imageUrl}>{user?.result.name.charAt(0)}</Avatar>
             <Typography className={classes.userName} variant="h6">{user?.result.name}</Typography>
 
-            <Typography className={classes.RESULT} variant="h6">{user?.result._id}</Typography>
             <Button variant="contained" className={classes.logout} color="secondary" onClick={logout}>Cerrar Sesión</Button>
             <Button variant="contained" className={classes.deleteUser} color="secondary" onClick={deleteUser}>BORRAR</Button>
           </div>
