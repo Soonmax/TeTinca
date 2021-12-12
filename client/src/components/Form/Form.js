@@ -8,6 +8,11 @@ import ChipInput from 'material-ui-chip-input';
 import { createPost, updatePost } from '../../actions/posts';
 import useStyles from './styles';
 
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
+
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({ title: '', message: '', tags: [], selectedFile: '' });
   const post = useSelector((state) => (currentId ? state.posts.posts.find((message) => message._id === currentId) : null));
@@ -29,13 +34,33 @@ const Form = ({ currentId, setCurrentId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (currentId === 0) {
-      dispatch(createPost({ ...postData, name: user?.result?.name }, history));
-      clear();
-    } else {
-      dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
-      clear();
+    console.log(postData.title);
+
+    let isnumTitulo = /^\d+$/.test(postData.title);
+    let isnumDescripcion = /^\d+$/.test(postData.message);
+
+    if (isnumTitulo == true || isnumDescripcion == true) {
+      console.log("El título o la descripción no pueden tenen solo numeros");
+      MySwal.fire({
+
+        icon: 'error',
+        title: 'Oops...',
+        text: "El título o la descripción no pueden tenen solo numeros",
+      })
     }
+
+    else {
+      console.log("PASO");
+      if (currentId === 0) {
+        dispatch(createPost({ ...postData, name: user?.result?.name }, history));
+        clear();
+      } else {
+        dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
+        clear();
+      }
+    }
+
+
   };
 
   if (!user?.result?.name) {
